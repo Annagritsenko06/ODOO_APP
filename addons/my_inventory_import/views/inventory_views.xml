@@ -1,0 +1,43 @@
+<odoo>
+  <record id="view_imported_inventory_tree" model="ir.ui.view">
+    <field name="name">imported.inventory.tree</field>
+    <field name="model">imported.inventory</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="external_id"/>
+        <field name="imported_on"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_imported_inventory_form" model="ir.ui.view">
+    <field name="name">imported.inventory.form</field>
+    <field name="model">imported.inventory</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="external_id"/>
+            <field name="api_token" readonly="1"/>
+            <field name="imported_on"/>
+          </group>
+          <group>
+            <label string="Raw JSON"/>
+            <field name="data_json" nolabel="1" widget="text" readonly="1"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_imported_inventory" model="ir.actions.act_window">
+    <field name="name">Imported Inventories</field>
+    <field name="res_model">imported.inventory</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_my_import_root" name="Inventory Import" sequence="10"/>
+  <menuitem id="menu_my_import" name="Imported Inventories" parent="menu_my_import_root" action="action_imported_inventory"/>
+</odoo>
