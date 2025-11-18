@@ -9,25 +9,20 @@ class ImportInventoryWizard(models.TransientModel):
     api_url = fields.Char(
         string='API URL',
         required=True,
-        default='https://your-app.example.com/api/inventories/aggregates'
-    )
+        default='https://inventory-5us2.onrender.com/api/inventory')
     api_token = fields.Char(string='API Token', required=True)
     external_id = fields.Char(string='External Inventory ID', help='Optional')
 
     def _call_api(self, url, token, external_id=None):
-        headers = {'Accept': 'application/json', 'X-Api-Token': token}
+        full_url = f"{url.rstrip('/')}/{token}"
         params = {}
         if external_id:
             params['id'] = external_id
+
         try:
-            resp = requests.get(url, headers=headers, params=params, timeout=15)
+            resp = requests.get(full_url, params=params, timeout=60)
         except Exception as e:
             raise models.ValidationError(_("API request failed: %s") % e)
-
-        # fallback: try Authorization Bearer if 401
-        if resp.status_code == 401:
-            headers2 = {'Authorization': f'Bearer {token}', 'Accept': 'application/json'}
-            resp = requests.get(url, headers=headers2, params=params, timeout=15)
 
         if resp.status_code != 200:
             raise models.ValidationError(_("External API returned %s: %s") % (resp.status_code, resp.text))

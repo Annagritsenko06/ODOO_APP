@@ -1,5 +1,5 @@
 {
-    'name': 'My Inventory Import',
+    'name': 'My ODOO FOR INVENTORIES',
     'version': '1.0',
     'summary': 'Import inventories from external app by API token (read-only viewer)',
     'author': 'Generated',
